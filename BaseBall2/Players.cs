@@ -9,6 +9,7 @@ namespace BaseBallSim
     //this is the class all postitions shall be derieved from? or let postition be a property in player?
     class Player
     {
+        //array of position names, maybe change this to an enum??
         private readonly string[] Positions =
         {
             "C ",
@@ -64,6 +65,7 @@ namespace BaseBallSim
             }
         }
 
+        //constructor that takes a single int parameter for the position number and calculates the hitchance and hitpower
         public Player(int positionNumber)
         {
             Position = Positions[positionNumber];
@@ -71,54 +73,63 @@ namespace BaseBallSim
             setPower();
         }
 
+        //method to set hit chance
+        //gets the index of the array element that correlates to the Position property
+        //uses the index to return a random number based of off a players position
+        //this creates a construct where players of a certain position will be nautrally more skilled than others
         private void setChance()
         {
             Random rand = new Random();
-
-            for (int i = 0; i < Positions.Length; ++i)
-            {
-                if (Positions[i].Equals(Position))
-                {
-                    HitChance = rand.Next(i * 4 + 40, i * 4 + 65);
-                }                    
-            }
+            int index = Array.IndexOf(Positions, Position);
+            HitChance = rand.Next(index * 4 + 40, index * 4 + 65);
         }
 
+        //method to set hit power
+        //gets the index of the array element that correlates to the Position property
+        //uses the index to return a random number based of off a players position
+        //this creates a construct where players of a certain position will be nautrally more skilled than others
         private void setPower()
         {
             Random rand = new Random(hitChance);
-
-            for (int i = 0; i < Positions.Length; ++i)
-            {
-                if (Positions[i].Equals(Position))
-                {
-                    HitPower = rand.Next(i * 4 + 40, i * 4 + 65);
-                }
-            }
+            int index = Array.IndexOf(Positions, Position);
+            HitPower = rand.Next(index * 4 + 40, index * 4 + 65);
         }
 
+        //method containing the logic for a swing based on an incoming pitch
+        //should recieve an argument for a Random object so it is seeded correctly
+        //first checks if the the result of the swing is a fould
+        //if the pitch was not a foul the attempt is tested to see if it is a successful hit
+        //if the swing is a successful hit, hit power is tested to see what kind of hit it is
+        //if the attempt is not a successful hit the result is a strike
         public int swing(int pitch, Random rand)
         {
-            var aHit = false;
-            var attempt = rand.Next(1, HitChance);
-
             //check if it is a foul
             if (rand.Next(1, pitch) < 15)
             {
                 //foul
                 return 5;
             }
+
+            var attempt = rand.Next(1, HitChance);
             if (attempt >= pitch)
             {
-                aHit = true;
-            }
-
-            if (aHit)
-            {
+                //a hit
                 var pow = rand.Next(1, HitPower);
+                if (pow < 60)
+                {
+                    //single
+                }
+                else if (pow < 65)
+                {
+                    //double
+                }
+                else if (pow < 75)
+                {
+                    //triple continue
+                }
                 if (pow >= 75)
                 {
-                    //a homerun
+                    //homerun
                     return 4;
                 }
                 else if (pow >= 65)
@@ -133,7 +144,7 @@ namespace BaseBallSim
                 }
                 else
                 {
-                    //a hit
+                    //single
                     return 1;
                 }
             }

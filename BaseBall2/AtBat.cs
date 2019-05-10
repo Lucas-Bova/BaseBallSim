@@ -11,6 +11,7 @@ namespace BaseBallSim
     {
         private int strikes = 0;
         private int balls = 0;
+        private Player[] players;
 
         public int Strikes
         {
@@ -49,12 +50,8 @@ namespace BaseBallSim
             }
         }
 
-        public AtBat()
-        {
 
-        }
-
-        public void AtBatIN(Player[] players, Pitcher pitcher) //change this so we have a constructor that takes these.
+        public void AtBatIN(Player[] players, Pitcher pitcher)
         {
             Random rand = new Random();
 
