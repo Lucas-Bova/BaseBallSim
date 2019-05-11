@@ -50,6 +50,41 @@ namespace BaseBallSim
             }
         }
 
+        public void atBatSim(Player[] players, Pitcher pitcher)
+        {
+            Random rand = new Random();
+            while (Outs< 3)
+            {
+                double ballChance;
+                double strikeChance;
+                var pitch = pitcher.Pitch(rand);
+                getChances(pitch, out ballChance, out strikeChance);
+
+                //logic for if to swing or not here
+                bool swing = strikeChance >= ballChance ? true : false;
+
+                if (swing)
+                {
+                    //result of the swing represented by an int variable that will be passed into the swingOutcome Method to determine which actions should execute based on the result
+                    var outcome = players[Index].swing(pitch, rand);
+                    SwingOutcomeSim(outcome);
+                }
+                //the user did not decide to swing
+                else
+                {
+                    //check if the pitch was a ball or a strike
+                    //might need to look at this logic in more depth soon
+                    if (rand.Next(1, pitch) <= 15)
+                    {
+                        Balls++;
+                    }
+                    else
+                    {
+                        Strikes++;
+                    }
+                }
+            }
+        }
 
         public void AtBatIN(Player[] players, Pitcher pitcher)
         {
@@ -102,6 +137,7 @@ namespace BaseBallSim
                     }
                 }
             }
+            PrintOutPut("Inning over");
         }
 
         //simple method that will only add a strike to the total number of strikes if there are fewer than two strikes
@@ -171,6 +207,44 @@ namespace BaseBallSim
                     //foul
                     foul();
                     PrintOutPut("Foul!!!");
+                    break;
+            }
+        }
+
+        //determines the outcome of the swing based on the outcome variable
+        //to add a new outcome just add a new case
+        private void SwingOutcomeSim(int outcome)
+        {
+            //outcome of the swing
+            switch (outcome)
+            {
+                case 0:
+                    //strike
+                    Strikes++;
+                    break;
+                case 1:
+                    //single base hit
+                    trackBase(1);
+                    ResetAtbat();
+                    break;
+                case 2:
+                    //double
+                    trackBase(2);
+                    ResetAtbat();
+                    break;
+                case 3:
+                    //triple
+                    trackBase(3);
+                    ResetAtbat();
+                    break;
+                case 4:
+                    //Home Run
+                    Homerun();
+                    ResetAtbat();
+                    break;
+                case 5:
+                    //foul
+                    foul();
                     break;
             }
         }

@@ -8,17 +8,23 @@ using static System.Console;
 namespace BaseBallSim
 {
     /*
-     * create 9 player objects, one for each position... array???
+     * create 9 player objects, one for each position
      * randomly sort the player objects
      * 
-     * int the inning, use a different object for each at bat
-     * have a method that returns the next player object?
-     * use the while loop to iterate through the array?
+     * in the inning, use a different object for each at bat
      */
     class Program
     {
         static void Main(string[] args)
         {
+            Write("Play or Sim? (p for play and s for sim): ");
+            var tempChar = char.Parse(ReadLine());
+            if (tempChar == 's')
+            {
+                Write("How many innings? ");
+                var tempInt = int.Parse(ReadLine());
+                RunSim(tempInt);
+            }
             Player[] playerArr = new Player[9];
             for (int i = 0; i < playerArr.Length; ++i)
             {
@@ -52,6 +58,27 @@ namespace BaseBallSim
                 players[k] = temp;
             }
             return players;
+        }
+        private static void RunSim(int iterations)
+        {
+            int totalRuns = 0;
+            //add more data here
+
+            Player[] playerArr = new Player[9];
+            for (int i = 0; i < playerArr.Length; ++i)
+            {
+                playerArr[i] = new Player(i);
+            }
+            Pitcher pitcher = new Pitcher();
+            for (int i = 0; i < iterations; ++i)
+            {
+                AtBat atbat = new AtBat();
+                atbat.atBatSim(shuffleArray(playerArr), pitcher);
+                //get values from the at bat object and add them to running totals
+                totalRuns += atbat.Score;
+            }
+            WriteLine("Total number of runs scored in {0} innings is {1}", iterations, totalRuns);
+            Read();
         }
     }
 }

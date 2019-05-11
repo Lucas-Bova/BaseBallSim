@@ -3,7 +3,7 @@ using System;
 
 namespace BaseBallSim
 {
-    class Inning //maybe seperate this into an at bat class that inherits from inning, so we can eventually create a pitcher class
+    abstract class Inning //maybe seperate this into an at bat class that inherits from inning, so we can eventually create a pitcher class
     {
         private int outs = 0;
         protected bool[] onBase = { false, false, false, false };
@@ -20,11 +20,8 @@ namespace BaseBallSim
             set
             {
                 //check if the number of outs is equal to or greater than three
+                //this has been changed in test
                 outs = value;
-                if (outs >= 3)
-                {
-                    PrintOutPut("Inning over");
-                }
             }
         }
         public int Score { get; set; }

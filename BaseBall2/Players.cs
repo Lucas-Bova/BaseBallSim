@@ -97,7 +97,7 @@ namespace BaseBallSim
 
         //method containing the logic for a swing based on an incoming pitch
         //should recieve an argument for a Random object so it is seeded correctly
-        //first checks if the the result of the swing is a fould
+        //first checks if the the result of the swing is a foul
         //if the pitch was not a foul the attempt is tested to see if it is a successful hit
         //if the swing is a successful hit, hit power is tested to see what kind of hit it is
         //if the attempt is not a successful hit the result is a strike
@@ -118,34 +118,22 @@ namespace BaseBallSim
                 if (pow < 60)
                 {
                     //single
+                    return 1;
                 }
-                else if (pow < 65)
-                {
-                    //double
-                }
-                else if (pow < 75)
-                {
-                    //triple continue
-                }
-                if (pow >= 75)
-                {
-                    //homerun
-                    return 4;
-                }
-                else if (pow >= 65)
-                {
-                    //triple
-                    return 3;
-                }
-                else if (pow >= 60)
+                else if (pow < 70)
                 {
                     //double
                     return 2;
                 }
+                else if (pow < 75)
+                {
+                    //triple continue
+                    return 3;
+                }
                 else
                 {
-                    //single
-                    return 1;
+                    //homerun
+                    return 4;
                 }
             }
             else
@@ -155,6 +143,7 @@ namespace BaseBallSim
             }
         }
 
+        //override to string method to return the player position, hitchance and hitpower
         public override string ToString()
         {
             return $"{Position} - Hit Chance: {HitChance} Hit Power: {HitPower}";
@@ -166,6 +155,7 @@ namespace BaseBallSim
     {
         private int pitchAbility;
 
+        //porperty that sets a pitchers overall ability
         public int PitchAbility
         {
             get
@@ -185,23 +175,27 @@ namespace BaseBallSim
             }
         }
 
+        //constructor that calls setPitch method to set pitch ability each time a new Pitcher object is created
         public Pitcher()
         {
             setPitch();
         }
 
+        //sets the ability of the pitcher with a random number between 60 and 100
         private void setPitch()
         {
             Random rand = new Random();
             PitchAbility = rand.Next(60, 100);
         }
 
+        //public method that returns an int value for pitch power
+        //method takes a Random object to insure it is seeded correctly
         public int Pitch(Random rand)
         {
             return rand.Next(1, PitchAbility);
         }
 
-
+        //override to string method to return pitcher ability
         public override string ToString()
         {
             return $"Pitcher Ability: {PitchAbility}";
